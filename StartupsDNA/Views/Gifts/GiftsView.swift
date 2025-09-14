@@ -20,32 +20,30 @@ struct GiftsView: View {
 
     // MARK: - Body
     var body: some View {
-        NavigationView {
-            ZStack {
-                LoginView.background(nil)
-                ScrollView {
-                    VStack(spacing: 0) {
-                        VStack(spacing: 12) {
-                            deliverTo
-                            titleWithSearch
-                        }
-                        .frame(maxHeight: .infinity, alignment: .top)
-                        .padding(.horizontal, 16)
-                        .padding(.bottom, 10)
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            BannersView(viewModel: viewModel)
-                        }
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            CollectionsView(viewModel: viewModel)
-                        }
-                        ScrollView(.vertical, showsIndicators: false) {
-                            CategoriesView(viewModel: viewModel)
-                        }
+        ZStack {
+            ContentView.background(nil)
+            ScrollView {
+                VStack(spacing: 0) {
+                    VStack(spacing: 12) {
+                        deliverTo
+                        titleWithSearch
+                    }
+                    .frame(maxHeight: .infinity, alignment: .top)
+                    .padding(.horizontal, 16)
+                    .padding(.bottom, 10)
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        BannersView(viewModel: viewModel)
+                    }
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        CollectionsView(viewModel: viewModel)
+                    }
+                    ScrollView(.vertical, showsIndicators: false) {
+                        CategoriesView(viewModel: viewModel)
                     }
                 }
             }
-            .navigationBarHidden(true)
         }
+        .navigationBarHidden(true)
     }
 
     // MARK: - Views

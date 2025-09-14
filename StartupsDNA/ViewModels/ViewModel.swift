@@ -8,14 +8,15 @@
 import SwiftUI
 
 final class ViewModel: ObservableObject {
-    @Published var isSignedInApple: Bool = false
-    @Published var isSignedInGoogle: Bool = false
+    @Published var isSignedIn: Bool = false
     @Published var searchText: String = ""
     @Published var selectedCurrency: Currency = .USD
 
     @Published var banners: [Banner] = Mocks.banners
     @Published var collections: [Collection] = Mocks.collections
     @Published var categories: [Category] = Mocks.categories
+
+    @Published var path = [String]()
 
     func toggleFavoriteCategory(_ category: Category) {
         if let index = categories.firstIndex(where: { category.id == $0.id }) {

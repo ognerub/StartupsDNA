@@ -20,12 +20,13 @@ struct CategoriesView: View {
             .padding(16)
             categoriesCards
             .padding(.horizontal, 16)
+            .padding(.bottom, 16)
         }
         .frame(maxWidth: .infinity)
         .background(.customWhite)
         .cornerRadius(16)
         .padding(.horizontal, 16)
-        .padding(.top, 10)
+        .padding(.vertical, 10)
     }
 
     private var allCeteroriesButton: some View {
@@ -92,7 +93,7 @@ struct CategoriesView: View {
                 }, label: {
                     ZStack {
                         Rectangle()
-                            .fill(.red)
+                            .fill(.clear)
                             .frame(height: 156)
                             .overlay {
                                 Image(uiImage: UIImage(named: category.image) ?? UIImage.checkmark)
@@ -116,7 +117,6 @@ struct CategoriesView: View {
                                     .cornerRadius(24)
                             })
                             .tint(!category.isFavorite ? .customWhite : .customDeepRose)
-                            .buttonStyle(CustomButtonStyle())
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                         .padding(10)
@@ -125,4 +125,21 @@ struct CategoriesView: View {
             }
         })
     }
+}
+
+#Preview {
+    struct PreviewStruct: View {
+        @ObservedObject var viewModel = ViewModel()
+        @State var path = [String]()
+
+        var body: some View {
+            NavigationView {
+                ScrollView {
+                    CategoriesView(viewModel: viewModel)
+                }
+            }
+        }
+    }
+
+    return PreviewStruct()
 }

@@ -2,90 +2,41 @@
 //  LoginView.swift
 //  StartupsDNA
 //
-//  Created by Alexander Ognerubov on 12.09.2025.
+//  Created by Alexander Ognerubov on 14.09.2025.
 //
+
 
 import SwiftUI
 
 struct LoginView: View {
 
-    @ObservedObject private var viewModel: ViewModel
+    @ObservedObject var googleAuthManager: GoogleAuthManager
 
-    init() {
-        self.viewModel = ViewModel()
-        setupAppearence()
-    }
+    @Binding var isSignedIn: Bool
 
     // MARK: - Body
     var body: some View {
-        Group {
-            if !viewModel.isSignedInApple || viewModel.isSignedInGoogle {
-                TabView {
-                    GiftsView(viewModel: viewModel)
-                        .tabItem({
-                            VStack {
-                                Image(.tabIconGifts)
-                                Text("Gifts")
-                                    .font(.system(size: 12, weight: .medium))
-                            }
-                        })
-                        .tag(0)
-                    ProfileView()
-                        .tabItem({
-                            VStack {
-                                Image(.tabIconFlowers)
-                                Text("Flowers")
-                                    .font(.system(size: 12, weight: .medium))
-                            }
-                        })
-                        .tag(1)
-                    ProfileView()
-                        .tabItem({
-                            VStack {
-                                Image(.tabIconEvents)
-                                Text("Events")
-                                    .font(.system(size: 12, weight: .medium))
-                            }
-                        })
-                        .tag(2)
-                    ProfileView()
-                        .tabItem({
-                            VStack {
-                                Image(.tabIconCart)
-                                Text("Cart")
-                                    .font(.system(size: 12, weight: .medium))
-                            }
-                        })
-                        .tag(3)
-                    ProfileView()
-                        .tabItem({
-                            VStack {
-                                Image(.tabIconProfile)
-                                Text("Profile")
-                                    .font(.system(size: 12, weight: .medium))
-                            }
-                        })
-                        .tag(4)
-                }
-                .tint(.customDarkBlue)
-            } else {
-                NavigationView {
-                    ZStack {
-                        LoginView.background(.flowerBackground)
-                        VStack(spacing: 0) {
-                            subtitle
-                            mainImage
-                            loginButtons
-                            termsAndPolicy
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarTrailing, content: { toolBarButton })
-                        }
-                        .navigationTitle("WELCOME")
-                    }
-                }
+        ZStack {
+            ContentView.background(.flowerBackground)
+            VStack(spacing: 0) {
+                subtitle
+                mainImage
+                loginButtons
+                termsAndPolicy
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing, content: { toolBarButton })
+            }
+            .navigationTitle("WELCOME")
+        }
+        .onChange(of: googleAuthManager.isSignedIn) { newValue in
+            isSignedIn = newValue
+        }
+        .alert(isPresented: $googleAuthManager.isErrorAlertPresented) {
+            Alert(title: Text("Error"), message: Text("\(googleAuthManager.error?.localizedDescription ?? "")"), dismissButton: .cancel(Text("Cancel"), action: {
+                googleAuthManager.error = nil
+            }))
         }
     }
 
@@ -118,7 +69,7 @@ struct LoginView: View {
             LoginButton(
                 title: "Continue with Google",
                 image: .googleLogo,
-                action: { print("Google") }
+                action: { googleAuthManager.signIn() }
             )
         }
         .padding([.horizontal, .bottom], 16)
@@ -162,40 +113,22 @@ struct LoginView: View {
                 .foregroundColor(.customDarkBlue)
         })
     }
-
-    // MARK: - Methods
-    private func setupAppearence() {
-        UINavigationBar.appearance().titleTextAttributes = [
-            .font: UIFont(name: "YFFRARETRIAL-AlphaBlack", size: 40)!,
-            .foregroundColor: UIColor.customDarkBlue
-        ]
-        UINavigationBar.appearance().largeTitleTextAttributes = [
-            .font: UIFont(name: "YFFRARETRIAL-AlphaBlack", size: 64)!,
-            .foregroundColor: UIColor.customDarkBlue
-        ]
-        let tabBarAppearance = UITabBarAppearance()
-        tabBarAppearance.configureWithDefaultBackground()
-        UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
-        UITabBar.appearance().unselectedItemTintColor = UIColor.customInavtive
-        UITabBar.appearance().barTintColor = UIColor.customWhite
-    }
-}
-
-extension LoginView {
-    static func background(_ imageResource: ImageResource?) -> some View {
-        Rectangle()
-            .fill(.customLightBlue)
-            .ignoresSafeArea()
-            .overlay {
-                if let imageResource {
-                    Image(imageResource)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-                        .offset(y: 55)
-                }
-            }
-    }
 }
 
 #Preview {
-    LoginView()
+    struct PreviewStruct: View {
+        @ObservedObject var googleAuthManager = GoogleAuthManager()
+
+        init() {
+            ContentView.setupAppearence()
+        }
+
+        var body: some View {
+            NavigationView {
+                LoginView(googleAuthManager: googleAuthManager, isSignedIn: .constant(false))
+            }
+        }
+    }
+
+    return PreviewStruct()
 }

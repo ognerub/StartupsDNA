@@ -30,17 +30,17 @@ struct BannersView: View {
                             .foregroundColor(Color(uiColor: UIColor(named: banner.secondaryColor) ?? UIColor.black))
                             .frame(maxWidth: .infinity, alignment: .leading)
                         HStack {
-                            Button(action: {
-                                print("Banner action pressed")
+                            NavigationLink(destination: {
+                                InProgressView()
                             }, label: {
                                 Text(banner.action)
                                     .font(.system(size: 14, weight: .bold))
                                     .foregroundColor(.black)
+                                    .padding(.horizontal, 14)
+                                    .padding(.vertical, 5)
+                                    .background(.customWhite)
+                                    .cornerRadius(16)
                             })
-                            .padding(.horizontal, 14)
-                            .padding(.vertical, 5)
-                            .background(.customWhite)
-                            .cornerRadius(16)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                     }
