@@ -11,7 +11,7 @@ import SwiftUI
 struct StartupsDNAApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            LoginView()
         }
     }
 }
