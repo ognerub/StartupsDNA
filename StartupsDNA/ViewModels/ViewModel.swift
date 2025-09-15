@@ -8,16 +8,16 @@
 import SwiftUI
 
 final class ViewModel: ObservableObject {
+    // MARK: Properties
     @Published var isSignedIn: Bool = false
     @Published var searchText: String = ""
     @Published var selectedCurrency: Currency = .USD
-
+    @Published var path = [String]()
     @Published var banners: [Banner] = Mocks.banners
     @Published var collections: [Collection] = Mocks.collections
     @Published var categories: [Category] = Mocks.categories
 
-    @Published var path = [String]()
-
+    // MARK: - Public methods
     func toggleFavoriteCategory(_ category: Category) {
         if let index = categories.firstIndex(where: { category.id == $0.id }) {
             let category = categories[index]
@@ -45,27 +45,6 @@ enum Currency: LocalizedStringKey, CaseIterable {
         case .UZS: return "🇺🇿"
         }
     }
-}
-
-struct Banner: Identifiable, Codable {
-    let id: UUID
-    let title: String
-    let action: String
-    let primaryColor: String
-    let secondaryColor: String
-    let image: String
-}
-
-struct Collection: Identifiable, Codable {
-    let id: UUID
-    let title: String
-    let image: String
-}
-
-struct Category: Identifiable, Codable {
-    let id: UUID
-    let isFavorite: Bool
-    let image: String
 }
 
 enum Mocks {

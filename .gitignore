@@ -1,0 +1,62 @@
+### Общие системные файлы ###
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+### Xcode ###
+# Файлы сборки
+build/
+DerivedData/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata/
+
+# Прочие файлы Xcode
+*.xccheckout
+*.moved-aside
+*.xcuserstate
+*.xcscmblueprint
+
+# Swift Package Manager
+.swiftpm
+Packages
+.build/
+
+# Актуальные настройки совместимости Xcode
+*.xccheckout
+
+### Swift ###
+# Файлы, генерируемые компилятором Swift
+*.swp
+*.swo
+*.o
+*.a
+
+### Firebase ###
+GoogleService-Info.plist
+
+### Ключи и сертификаты ###
+*.cer
+*.p12
+*.mobileprovision
+*.signing
+
+### Профили provisioning ###
+*.provisionprofile
+
+### Логи и временные файлы ###
+*.log
+*.tmp
+
+### Система управления пакетами Swift ###
+Package.resolved

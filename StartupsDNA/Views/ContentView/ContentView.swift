@@ -22,14 +22,40 @@ struct ContentView: View {
     var body: some View {
         NavigationStack(path: $viewModel.path) {
             Group {
-                if viewModel.isSignedIn {
-                    tabView
-                } else {
-                    LoginView(
-                        googleAuthManager: googleAuthManager,
-                        isSignedIn: $viewModel.isSignedIn
-                    )
+                ZStack {
+                    if viewModel.isSignedIn {
+                        tabView
+                    } else {
+                        LoginView(
+                            googleAuthManager: googleAuthManager,
+                            isSignedIn: $viewModel.isSignedIn
+                        )
+                        .onAppear {
+                            googleAuthManager.restorePreviousSignIn()
+                        }
+                    }
+                    if googleAuthManager.isLoading {
+                        Rectangle()
+                            .fill(.customBlack.opacity(0.25))
+                            .ignoresSafeArea()
+                            .overlay {
+                                VStack {
+                                    ProgressView()
+                                        .tint(.customWhite)
+                                    Text("Стучимся на сервер...")
+                                        .foregroundColor(.customWhite)
+                                }
+
+                            }
+                    }
                 }
+            }
+            .alert(isPresented: $googleAuthManager.isErrorAlertPresented) {
+                Alert(title: Text("Error"), message: Text("\(googleAuthManager.error?.localizedDescription ?? ""). Enter demo mode"), dismissButton: .cancel(Text("Confirm"), action: {
+                    googleAuthManager.error = nil
+                    googleAuthManager.isLoading = false
+                    googleAuthManager.isSignedIn = true
+                }))
             }
         }
     }

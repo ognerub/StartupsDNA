@@ -33,11 +33,6 @@ struct LoginView: View {
         .onChange(of: googleAuthManager.isSignedIn) { newValue in
             isSignedIn = newValue
         }
-        .alert(isPresented: $googleAuthManager.isErrorAlertPresented) {
-            Alert(title: Text("Error"), message: Text("\(googleAuthManager.error?.localizedDescription ?? "")"), dismissButton: .cancel(Text("Cancel"), action: {
-                googleAuthManager.error = nil
-            }))
-        }
     }
 
     // MARK: - Views
@@ -64,7 +59,7 @@ struct LoginView: View {
             LoginButton(
                 title: "Continue with Apple",
                 image: .appleLogo,
-                action: { print("Apple") }
+                action: { print("Apple login develop in progress.") }
             )
             LoginButton(
                 title: "Continue with Google",
